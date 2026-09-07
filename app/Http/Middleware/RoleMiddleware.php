@@ -13,7 +13,7 @@ class RoleMiddleware
         Closure $next,
         string $role
     ): Response {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return match ($role) {
                 'super_admin' => redirect()->route('super-admin.login'),
                 'admin' => redirect()->route('admin.login'),
@@ -28,7 +28,7 @@ class RoleMiddleware
             abort(403, 'You are not authorized to access this area.');
         }
 
-        if (!$user->is_active) {
+        if (! $user->is_active) {
             auth()->logout();
 
             return match ($role) {

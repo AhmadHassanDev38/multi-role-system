@@ -25,47 +25,47 @@ class AdminController extends Controller
         return view('super-admin.admins.create');
     }
 
-  public function store(Request $request)
-{
-    $data = $request->validate([
-        'name' => ['required', 'string', 'max:255'],
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
 
-        'email' => [
-            'required',
-            'email',
-            'max:255',
-            'unique:users,email',
-        ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email',
+            ],
 
-        'password' => [
-            'required',
-            'string',
-            'min:8',
-        ],
-    ]);
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+            ],
+        ]);
 
-    $admin = User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => Hash::make($data['password']),
-        'role' => 'admin',
-        'admin_id' => null,
-        'is_active' => true,
-    ]);
+        $admin = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'role' => 'admin',
+            'admin_id' => null,
+            'is_active' => true,
+        ]);
 
-    Mail::to($admin->email)->send(
-        new WelcomeAccountMail(
-            $admin->name,
-            $admin->email,
-            $data['password'],
-            url('/admin/login')
-        )
-    );
+        Mail::to($admin->email)->send(
+            new WelcomeAccountMail(
+                $admin->name,
+                $admin->email,
+                $data['password'],
+                url('/admin/login')
+            )
+        );
 
-    return redirect()
-        ->route('super-admin.admins.index')
-        ->with('success', 'Admin created successfully.');
-}
+        return redirect()
+            ->route('super-admin.admins.index')
+            ->with('success', 'Admin created successfully.');
+    }
 
     public function edit(User $admin)
     {
@@ -84,7 +84,7 @@ class AdminController extends Controller
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email,' . $admin->id,
+                'unique:users,email,'.$admin->id,
             ],
         ]);
 
@@ -103,7 +103,7 @@ class AdminController extends Controller
         abort_unless($admin->role === 'admin', 404);
 
         $admin->update([
-            'is_active' => !$admin->is_active,
+            'is_active' => ! $admin->is_active,
         ]);
 
         return back()->with('success', 'Admin status updated.');

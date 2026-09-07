@@ -24,7 +24,6 @@ Route::post('/super-admin/login', [SuperAdminAuthController::class, 'login'])
 Route::post('/super-admin/logout', [SuperAdminAuthController::class, 'logout'])
     ->name('super-admin.logout');
 
-
 /*
 |--------------------------------------------------------------------------
 | Admin Authentication
@@ -40,7 +39,6 @@ Route::post('/admin/login', [AdminAuthController::class, 'login'])
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])
     ->name('admin.logout');
 
-
 /*
 |--------------------------------------------------------------------------
 | User Authentication
@@ -55,7 +53,6 @@ Route::post('/login', [UserAuthController::class, 'login'])
 
 Route::post('/logout', [UserAuthController::class, 'logout'])
     ->name('user.logout');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +87,7 @@ Route::middleware('role:super_admin')
         Route::post('/admins/{admin}/toggle-status', [SuperAdminAdminController::class, 'toggleStatus'])
             ->name('admins.toggle-status');
 
-          // View all users
+        // View all users
         Route::get('/users', [SuperAdminUserController::class, 'index'])
             ->name('users.index');
 

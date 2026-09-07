@@ -27,55 +27,56 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-{
-    $data = $request->validate([
-        'name' => [
-            'required',
-            'string',
-            'max:255',
-        ],
+    {
+        $data = $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
 
-        'email' => [
-            'required',
-            'email',
-            'max:255',
-            'unique:users,email',
-        ],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                'unique:users,email',
+            ],
 
-        'password' => [
-            'required',
-            'string',
-            'min:8',
-        ],
-    ]);
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+            ],
+        ]);
 
-    $user = User::create([
-        'name' => $data['name'],
+        $user = User::create([
+            'name' => $data['name'],
 
-        'email' => $data['email'],
+            'email' => $data['email'],
 
-        'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password']),
 
-        'role' => 'user',
+            'role' => 'user',
 
-        'admin_id' => auth()->id(),
+            'admin_id' => auth()->id(),
 
-        'is_active' => true,
-    ]);
+            'is_active' => true,
+        ]);
 
-    Mail::to($user->email)->send(
-        new WelcomeAccountMail(
-            $user->name,
-            $user->email,
-            $data['password'],
-            url('/login')
-        )
-    );
+        Mail::to($user->email)->send(
+            new WelcomeAccountMail(
+                $user->name,
+                $user->email,
+                $data['password'],
+                url('/login')
+            )
+        );
 
-    return redirect()
-        ->route('admin.users.index')
-        ->with('success', 'User created successfully.');
-}
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'User created successfully.');
+    }
+
     public function edit(User $user)
     {
         abort_unless(
@@ -102,7 +103,7 @@ class UserController extends Controller
                 'required',
                 'email',
                 'max:255',
-                'unique:users,email,' . $user->id,
+                'unique:users,email,'.$user->id,
             ],
         ]);
 
@@ -126,7 +127,7 @@ class UserController extends Controller
         );
 
         $user->update([
-            'is_active' => !$user->is_active,
+            'is_active' => ! $user->is_active,
         ]);
 
         return back()

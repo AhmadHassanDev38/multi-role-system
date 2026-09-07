@@ -17,8 +17,7 @@ class WelcomeAccountMail extends Mailable
         public string $email,
         public string $password,
         public string $loginUrl
-    ) {
-    }
+    ) {}
 
     public function envelope(): Envelope
     {
